@@ -4,7 +4,7 @@ window.onload = function() {
     var userWinsElement = document.getElementById('win-count');
     var userLosses = 0;
     var userLossesElement = document.getElementById('loss-count');
-    var guessesLeft = 9;
+    var guessesLeft = 10;
     var guessesLeftElement = document.getElementById('guess-countdown');
     var userInputElement = document.getElementById('letter-count');
 
@@ -14,26 +14,60 @@ window.onload = function() {
 
     document.onkeyup = function(event) {
         var userInput = event.key.toLowerCase();
-        userInputElement.innerText += userInput;
 
-        if (userInput === psychicLetter && guessesLeft >= 1) {
-            userWins++;
-            console.log("the user has won", userWins, "times");
-            guessesLeft = 9;
-            userInputElement.innerText = "";
-        } else if (userInput !== psychicLetter && guessesLeft >= 1) {
-            guessesLeft--;
-            console.log("there are only", guessesLeft, "guesses left");
-        }
-        
-        if (userInput !== psychicLetter && guessesLeft === 0) {
-            userLosses++;
-            console.log("the user has lost", userLosses, "times");
-            userInputElement.innerText = "";
-        } else if (userInput === psychicLetter && guessesLeft === 0) {
+        // here I'll only have the "if we win" scenario, which will add to the wins tally,
+        // reset guessesLeft to 10, clear out the userInputElement, then pull a new letter
+        if (letters.indexOf(userInput) > -1) {
+            userInputElement.innerText += userInput;
+
+            if (userInput === psychicLetter && guessesLeft >= 1) {
+                // When the player wins, increase the Wins counter and start the game over again (without refreshing the page).
+                userWins++;
+                console.log("the user has won", userWins, "times");
+                guessesLeft = 10;
+                console.log("you have", guessesLeft, "guesses left");
+                userInputElement.innerText = "";
+                // var userHasWon = true;
+            } 
             
-            console.log('you guessed too late');
-        }
+            // this seems to negate the previous if statement, console logs nothing and no win happens
+            // if (userHasWon) {
+            //     var psychicLetter = letters[Math.floor(Math.random() * letters.length)];
+            //     console.log("The letter to be guessed is ", psychicLetter);        
+            // };
+            
+            if (userInput !== psychicLetter && guessesLeft >= 1) {
+                guessesLeft--;
+                if (guessesLeft >= 1) {
+                    console.log("there are only", guessesLeft, "guesses left");
+                } else {
+                    console.log('there are no guesses left');
+                };
+            };
+            
+            if (userInput !== psychicLetter && guessesLeft < 1) {
+                // now the same but for losses
+                userLosses++;
+                console.log("the user has lost", userLosses, "times");
+                guessesLeft = 10;
+                userInputElement.innerText = "";
+                // var psychicLetter = letters[Math.floor(Math.random() * letters.length)];
+                // console.log("The letter to be guessed is ", psychicLetter);            
+            };
+            
+            if (userInput === psychicLetter && guessesLeft < 1) {
+                guessesLeft = 10;
+                userInputElement.innerText = "";
+                console.log('you guessed too late');
+            };
+
+            // if (userInput === psychicLetter || guessesLeft < 1) {
+            //     var psychicLetter = letters[Math.floor(Math.random() * letters.length)];
+            //     console.log("The letter to be guessed is ", psychicLetter);            
+            // };
+
+        };
+
 
         userWinsElement.innerText = userWins;
         userLossesElement.innerText = userLosses;
@@ -43,7 +77,5 @@ window.onload = function() {
 
 
 
-    // When the player wins, increase the Wins counter and start the game over again (without refreshing the page).
 
-    // now the same but for losses
 };
