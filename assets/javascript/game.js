@@ -9,12 +9,18 @@ window.onload = function() {
     var userInputElement = document.getElementById('letter-count');
 
     // psychicLetter array needs to be separated into whatever function resets the game
-    var psychicLetter = letters[Math.floor(Math.random() * letters.length)];
-    console.log("The letter to be guessed is ", psychicLetter);
+    // var psychicLetter = letters[Math.floor(Math.random() * letters.length)];
+    // console.log("The letter to be guessed is ", psychicLetter);
 
     document.onkeyup = function(event) {
         var userInput = event.key.toLowerCase();
-
+        // I *REALLY* do not want the psychicLetter var here in the .onkeyup event, however this seems to be
+        // the only way I can get the psychicLetter to randomize again after
+        // a win or a loss. I can hide the mistake by taking out the console.log
+        // on line 22, but I'd rather leave it there to remind me what I need to fix
+        var psychicLetter = letters[Math.floor(Math.random() * letters.length)];
+        // console.log("The letter to be guessed is ", psychicLetter);
+    
         // here I'll only have the "if we win" scenario, which will add to the wins tally,
         // reset guessesLeft to 10, clear out the userInputElement, then pull a new letter
         if (letters.indexOf(userInput) > -1) {
